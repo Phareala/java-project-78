@@ -8,12 +8,13 @@ import java.util.function.Predicate;
 public class BaseSchema {
 
 
+
     public BaseSchema required()  {
         this.addCheck(Objects::nonNull);
         return this;
     }
 
-    private final List<Predicate<Object>> checkList = new ArrayList<>();
+    protected final List<Predicate<Object>> checkList = new ArrayList<>();
 
 
     void addCheck(Predicate<Object> check) {
