@@ -4,91 +4,105 @@ import hexlet.code.schemas.BaseSchema;
 import hexlet.code.schemas.MapSchema;
 import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.StringSchema;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AppTest {
+
+    private Validator v;
+    @BeforeEach
+    public void start() {
+        v = new Validator();
+    }
     @Test
     void testStringValidator() {
-        Validator v = new Validator();
         StringSchema schema = v.string();
 
-        assertThat(schema.isValid("")).isTrue();
-        assertThat(schema.isValid(null)).isTrue();
+        assertTrue(schema.isValid(""));
+        assertTrue(schema.isValid(null));
 
         schema.required();
 
-        assertThat(schema.isValid("what does the fox say")).isTrue();
-        assertThat(schema.isValid("hexlet")).isTrue();
+        assertTrue(schema.isValid("what does the fox say"));
+        assertTrue(schema.isValid("hexlet"));
 
-        assertThat(schema.isValid(null)).isFalse();
-        assertThat(schema.isValid(5)).isFalse();
-        assertThat(schema.isValid("")).isFalse();
+        assertFalse(schema.isValid(null));
+        assertFalse(schema.isValid(5));
+        assertFalse(schema.isValid(""));
 
-        assertThat(schema.contains("wh").isValid("what does the fox say")).isTrue();
-        assertThat(schema.contains("what").isValid("what does the fox say")).isTrue();
-        assertThat(schema.minLength(5).isValid("what does the fox say")).isTrue();
+        assertTrue(schema.contains("wh").isValid("what does the fox say"));
+        assertTrue(schema.contains("what").isValid("what does the fox say"));
+        assertTrue(schema.minLength(5).isValid("what does the fox say"));
 
-        assertThat(schema.contains("whatthe").isValid("what does the fox say")).isFalse();
-        assertThat(schema.isValid("what does the fox say")).isFalse();
-        assertThat(schema.minLength(10).isValid("whatthe")).isFalse();
+        assertFalse(schema.contains("whatthe").isValid("what does the fox say"));
+        assertFalse(schema.isValid("what does the fox say"));
+        assertFalse(schema.minLength(10).isValid("whatthe"));
     }
 
     @Test
     void testNumberValidator()  {
-        Validator v = new Validator();
         NumberSchema schema = v.number();
 
-        assertThat(schema.isValid(null)).isTrue();
-        assertThat(schema.positive().isValid(null)).isTrue();
+        assertTrue(schema.isValid(null));
+        assertTrue(schema.isValid(77));
+        assertTrue(schema.isValid(-77));
+        assertTrue(schema.isValid(0));
+        assertFalse(schema.isValid("Hexlet"));
+
+        schema.positive();
+
+        assertTrue(schema.isValid(null));
+        assertTrue(schema.isValid(77));
+        assertFalse(schema.isValid(-77));
+        assertFalse(schema.isValid(0));
 
         schema.required();
 
-        assertThat(schema.isValid(null)).isFalse();
-        assertThat(schema.isValid(10)).isTrue();
-        assertThat(schema.isValid("5")).isFalse();
-        assertThat(schema.isValid(-10)).isFalse();
-        assertThat(schema.isValid(0)).isFalse();
+        assertFalse(schema.isValid(null));
+        assertTrue(schema.isValid(77));
+        assertFalse(schema.isValid(-77));
+        assertFalse(schema.isValid(0));
 
-        schema.range(5, 10);
+        schema.range(50, 100);
 
-        assertThat(schema.isValid(5)).isTrue();
-        assertThat(schema.isValid(10)).isTrue();
-        assertThat(schema.isValid(4)).isFalse();
-        assertThat(schema.isValid(15)).isFalse();
-        assertThat(schema.range(65, 34).isValid(15)).isFalse();
+        assertTrue(schema.isValid(77));
+        assertTrue(schema.isValid(50));
+        assertTrue(schema.isValid(100));
+        assertFalse(schema.isValid(25));
+        assertFalse(schema.isValid(125));
     }
 
     @Test
     void testMapValidator()  {
-        Validator v = new Validator();
         MapSchema schema = v.map();
 
-        assertThat(schema.isValid(null)).isTrue();
+        assertTrue(schema.isValid(null));
 
         schema.required();
 
-        assertThat(schema.isValid(null)).isFalse();
-        assertThat(schema.isValid(new HashMap<>())).isTrue();
+        assertFalse(schema.isValid(null));
+        assertTrue(schema.isValid(new HashMap<>()));
 
         Map<String, String> data = new HashMap<>();
         data.put("key1", "value1");
-        assertThat(schema.isValid(data)).isTrue();
+        assertTrue(schema.isValid(data));
 
         schema.sizeof(2);
-        assertThat(schema.isValid(data)).isFalse();
+        assertFalse(schema.isValid(data));
         data.put("key2", "value2");
-        assertThat(schema.isValid(data)).isTrue();
-        assertThat(schema.sizeof(15).isValid(data)).isFalse();
+        assertTrue(schema.isValid(data));
+        assertFalse(schema.sizeof(15).isValid(data));
     }
 
     @Test
     void testShapeMapValidator()  {
-        Validator v = new Validator();
         MapSchema schema = v.map();
 
         Map<String, BaseSchema> schemas = new HashMap<>();
