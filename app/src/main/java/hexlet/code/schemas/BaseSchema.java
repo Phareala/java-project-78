@@ -14,10 +14,10 @@ public class BaseSchema {
         return this;
     }
 
-    protected final List<Predicate<Object>> checkList = new ArrayList<>();
+    private final List<Predicate<Object>> checkList = new ArrayList<>();
 
 
-    void addCheck(Predicate<Object> check) {
+    protected void addCheck(Predicate<Object> check) {
 
         checkList.add(check);
     }
@@ -31,4 +31,5 @@ public class BaseSchema {
         }
         return true;
     }
+
 }
