@@ -1,5 +1,6 @@
 package hexlet.code.schemas;
 
+
 public final class StringSchema extends BaseSchema {
 
     public StringSchema() {
@@ -8,12 +9,12 @@ public final class StringSchema extends BaseSchema {
 
     @Override
     public  StringSchema required() {
-        this.addCheck(v -> v != null && !((String) v).isEmpty());
+        this.addCheck(v -> v instanceof String && !(v.equals("")));
         return this;
     }
 
     public StringSchema minLength(int length) {
-        this.addCheck(v -> v != null && v.toString().length() >= length);
+        this.addCheck(v -> v != null && ((String) v).length() >= length);
         return this;
     }
 

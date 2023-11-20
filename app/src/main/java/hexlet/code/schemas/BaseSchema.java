@@ -17,7 +17,7 @@ public class BaseSchema {
     private final List<Predicate<Object>> checkList = new ArrayList<>();
 
 
-    protected void addCheck(Predicate<Object> check) {
+    void addCheck(Predicate<Object> check) {
 
         checkList.add(check);
     }
