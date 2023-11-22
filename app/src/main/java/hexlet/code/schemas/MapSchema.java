@@ -9,9 +9,9 @@ public final class MapSchema extends BaseSchema {
     }
 
     @Override
-    public MapSchema required() {
+    public BaseSchema required() {
         super.required();
-        return this;
+        return null;
     }
 
     public MapSchema sizeof(int size) {

@@ -7,9 +7,9 @@ public final class NumberSchema extends BaseSchema {
     }
 
     @Override
-    public NumberSchema required() {
+    public BaseSchema required() {
         super.required();
-        return this;
+        return null;
     }
 
     public NumberSchema positive() {

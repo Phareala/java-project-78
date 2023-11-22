@@ -8,8 +8,8 @@ public final class StringSchema extends BaseSchema {
     }
 
     @Override
-    public  StringSchema required() {
-        this.addCheck(v -> v instanceof String && !(v.equals("")));
+    public BaseSchema required() {
+        this.addCheck(v -> !(v == null || v.equals("")));
         return this;
     }
 
