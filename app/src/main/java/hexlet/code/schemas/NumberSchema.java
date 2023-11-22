@@ -1,13 +1,15 @@
 package hexlet.code.schemas;
 
 public final class NumberSchema extends BaseSchema {
+    private Integer minLength;
+    private String contains;
 
     public NumberSchema() {
         this.addCheck(v -> v == null || v instanceof Number);
     }
 
     @Override
-    public BaseSchema required() {
+    public NumberSchema required() {
         super.required();
         return null;
     }
@@ -18,7 +20,7 @@ public final class NumberSchema extends BaseSchema {
     }
 
     public NumberSchema range(int begin, int end) {
-        this.addCheck(v -> ((int) v) >= begin && ((int) v) <= end);
+        this.addCheck(v -> v == null || ((int) v) >= begin && ((int) v) <= end);
         return this;
     }
 

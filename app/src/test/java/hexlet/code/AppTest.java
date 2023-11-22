@@ -28,7 +28,7 @@ public class AppTest {
     public NumberSchema numberSchema;
 
     @Test
-    void testStringValidator() {
+    void testStringValidator1() {
         StringSchema stringSchema = v.string();
 
         assertTrue(stringSchema.isValid(""));
@@ -42,14 +42,28 @@ public class AppTest {
         assertFalse(stringSchema.isValid(null));
         assertFalse(stringSchema.isValid(5));
         assertFalse(stringSchema.isValid(""));
-
+    }
+    @Test
+    void testStringValidator2() {
+        StringSchema stringSchema = v.string();
+        assertTrue(stringSchema.contains("wh").isValid(null));
         assertTrue(stringSchema.contains("wh").isValid("what does the fox say"));
+        assertTrue(stringSchema.contains("what").isValid(null));
         assertTrue(stringSchema.contains("what").isValid("what does the fox say"));
+        assertTrue(stringSchema.minLength(5).isValid(null));
         assertTrue(stringSchema.minLength(5).isValid("what does the fox say"));
-
         assertFalse(stringSchema.contains("whatthe").isValid("what does the fox say"));
         assertFalse(stringSchema.isValid("what does the fox say"));
         assertFalse(stringSchema.minLength(10).isValid("whatthe"));
+    }
+    @Test
+    void testStringValidatorNull() {
+        StringSchema stringSchema = v.string();
+        assertTrue(stringSchema.contains("wh").isValid(null));
+        assertTrue(stringSchema.contains("what").isValid(null));
+        assertTrue(stringSchema.minLength(5).isValid(null));
+        assertTrue(stringSchema.contains("whatthe").isValid(null));
+        assertFalse(stringSchema.required().isValid(null));
     }
 
     @Test
@@ -86,6 +100,7 @@ public class AppTest {
         numberSchema = v.number();
         numberSchema.range(50, 100);
 
+        assertTrue(numberSchema.isValid(null));
         assertTrue(numberSchema.isValid(77));
         assertTrue(numberSchema.isValid(50));
         assertTrue(numberSchema.isValid(100));
@@ -122,6 +137,7 @@ public class AppTest {
 
         schemas.put("name", v.string().required());
         schemas.put("age", v.number().positive());
+
 
         shapeMapSchema.shape(schemas);
 

@@ -7,19 +7,19 @@ public final class StringSchema extends BaseSchema {
         this.addCheck(v -> v == null || v instanceof String);
     }
 
-    @Override
-    public BaseSchema required() {
+
+    public StringSchema required() {
         this.addCheck(v -> !(v == null || v.equals("")));
         return this;
     }
 
     public StringSchema minLength(int length) {
-        this.addCheck(v -> v != null && ((String) v).length() >= length);
+        this.addCheck(v -> v == null || ((String) v).length() >= length);
         return this;
     }
 
     public StringSchema contains(String substring) {
-        this.addCheck(v -> v != null && ((String) v).contains(substring));
+        this.addCheck(v -> v == null || ((String) v).contains(substring));
         return this;
     }
 
