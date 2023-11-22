@@ -25,7 +25,7 @@ public class AppTest {
     public void start() {
         v = new Validator();
     }
-    public NumberSchema numberSchema;
+    private NumberSchema numberSchema;
 
     @Test
     void testStringValidator1() {
